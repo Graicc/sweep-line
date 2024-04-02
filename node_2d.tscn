@@ -1,6 +1,8 @@
-[gd_scene format=3 uid="uid://btby7vyslwamg"]
+[gd_scene load_steps=3 format=3 uid="uid://btby7vyslwamg"]
+
+[ext_resource type="Script" path="res://line_manager.gd" id="1_n038c"]
+[ext_resource type="PackedScene" uid="uid://cydb6j4yh5jv7" path="res://Line.tscn" id="2_0viv0"]
 
 [node name="Node2D" type="Node2D"]
-
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(319, 380, 492, 119, 668, 273, 785, 85, 1021, 276, 706, 582, 536, 366)
+script = ExtResource("1_n038c")
+line_scene = ExtResource("2_0viv0")

@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://cydb6j4yh5jv7"]
+
+[ext_resource type="Script" path="res://line_dragger.gd" id="1_uvgog"]
+[ext_resource type="Texture2D" uid="uid://c3ymfjjaghffa" path="res://Circle.png" id="2_gdsac"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yjor4"]
+radius = 48.28
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("line_renderer", "start_collision", "end_collision")]
+script = ExtResource("1_uvgog")
+line_renderer = NodePath("Line2D")
+start_collision = NodePath("S")
+end_collision = NodePath("E")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(270, 281, 725, 246)
+default_color = Color(0.960784, 0.47451, 0, 1)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="S" type="Area2D" parent="."]
+scale = Vector2(0.43, 0.43)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="S"]
+shape = SubResource("CircleShape2D_yjor4")
+
+[node name="Sprite2D" type="Sprite2D" parent="S/CollisionShape2D"]
+scale = Vector2(0.820313, 0.820313)
+texture = ExtResource("2_gdsac")
+
+[node name="E" type="Area2D" parent="."]
+position = Vector2(65, 255)
+scale = Vector2(0.43, 0.43)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="E"]
+shape = SubResource("CircleShape2D_yjor4")
+
+[node name="Sprite2D" type="Sprite2D" parent="E/CollisionShape2D"]
+scale = Vector2(0.820313, 0.820313)
+texture = ExtResource("2_gdsac")
+
+[connection signal="input_event" from="S" to="." method="_on_area_2d_input_event"]
+[connection signal="input_event" from="E" to="." method="_on_area_2d_2_input_event"]
