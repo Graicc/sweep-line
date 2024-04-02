@@ -3,4 +3,4 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(311, 289, 325, 275, 768, 383, 721, 139, 1136, 272, 706, 582, 391, 409)
+points = PackedVector2Array(319, 380, 492, 119, 668, 273, 785, 85, 1021, 276, 706, 582, 536, 366)
