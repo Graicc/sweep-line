@@ -25,6 +25,10 @@ func initialize(start_pos: Vector2, end_pos: Vector2):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		left_selected = false
+		right_selected = false
+	
 	if left_selected:
 		var mouse_pos = get_viewport().get_mouse_position()
 		start = mouse_pos
@@ -41,18 +45,32 @@ var left_selected = false
 var right_selected = false
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
+	if Input.is_action_just_pressed("Delete"):
+		get_viewport().set_input_as_handled()
+		# Destroy the object
+		queue_free()
+
 	if Input.is_action_just_pressed("Click"):
 		left_selected = true
+		# Set the input as as handeled so it doesn't trigger anything else
+		get_viewport().set_input_as_handled()
 	
 	if Input.is_action_just_released("Click"):
 		left_selected = false
+		get_viewport().set_input_as_handled()
 
 
 
 func _on_area_2d_2_input_event(viewport, event, shape_idx):
+	if Input.is_action_just_pressed("Delete"):
+		get_viewport().set_input_as_handled()
+		queue_free()
+
 	if Input.is_action_just_pressed("Click"):
 		right_selected = true
+		get_viewport().set_input_as_handled()
 	
 	if Input.is_action_just_released("Click"):
 		right_selected = false
+		get_viewport().set_input_as_handled()
 

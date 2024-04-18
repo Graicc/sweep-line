@@ -6,11 +6,8 @@ extends Node2D
 
 func add_line(start: Vector2, end: Vector2):
 	var line = line_scene.instantiate() as Node2D
-	line.position = start
-
-	var line_renderer = line.get_node("Line2D") as Line2D
-	line_renderer.points = [Vector2(0, 0), end - start]
-	
+	#line.position = start
+	line.initialize(start, end)
 	
 	add_child(line)
 	lines.append(line)
@@ -25,3 +22,15 @@ func _process(delta):
 	# var pos = get_global_mouse_position()
 	# lines[0].get_node("Line2D").points[1] = pos
 	pass
+
+
+func _on_button_pressed():
+	var max_y = 600;
+	var max_x = 800;
+	var x1 = randf_range(0, max_x);
+	var y1 = randf_range(0, max_y);
+	var x2 = randf_range(0, max_x);
+	var y2 = randf_range(0, max_y);
+	add_line(Vector2(x1, y1), Vector2(x2, y2))
+	
+	pass # Replace with function body.
