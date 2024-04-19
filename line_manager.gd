@@ -6,9 +6,10 @@ extends Node2D
 
 func add_line(start: Vector2, end: Vector2):
 	var line = line_scene.instantiate() as Node2D
-	#line.position = start
+	# Call initialize on `line_dragger.gd`
 	line.initialize(start, end)
 	
+	# Add as a child of ourselves
 	add_child(line)
 	lines.append(line)
 
