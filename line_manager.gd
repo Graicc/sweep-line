@@ -1,37 +1,48 @@
-extends Node2D
+extends Node
 
 @export var line_scene: PackedScene
 
-@export var lines: Array[Node2D] = []
+# The array of lines for doing sweep line intersection
+var lines: Array[Node] = []
+
+# $Slider is shorthand for get_node("Slider")
+@onready var slider = $Slider
 
 func add_line(start: Vector2, end: Vector2):
-	var line = line_scene.instantiate() as Node2D
+	# Spawn the line in the world
+	var line = line_scene.instantiate()
 	# Call initialize on `line_dragger.gd`
 	line.initialize(start, end)
 	
 	# Add as a child of ourselves
 	add_child(line)
 	lines.append(line)
-
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Start us off with a single line
 	add_line(Vector2(100, 100), Vector2(300, 100))
-	# add_line(Vector2(20, 200), Vector2(200, 100))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	# var pos = get_global_mouse_position()
-	# lines[0].get_node("Line2D").points[1] = pos
 	pass
 
-
-func _on_button_pressed():
+# Wired up to the `Add line` button
+func add_random_line():
 	var max_y = 600;
 	var max_x = 800;
+	
 	var x1 = randf_range(0, max_x);
 	var y1 = randf_range(0, max_y);
 	var x2 = randf_range(0, max_x);
 	var y2 = randf_range(0, max_y);
-	add_line(Vector2(x1, y1), Vector2(x2, y2))
 	
-	pass # Replace with function body.
+	add_line(Vector2(x1, y1), Vector2(x2, y2))
+
+# Remove lines when they are destroyed
+func _on_child_exiting_tree(node):
+	# Check if the deleted node is in the array, and remove it if it is
+	for i in range(0, lines.size()):
+		if lines[i] == node:
+			lines.remove_at(i)
+			return

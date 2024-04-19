@@ -1,12 +1,13 @@
-extends Node2D
+extends Node
 
 @onready var line_renderer = $Line2D
 @onready var slider = $HSlider
 
+var slider_position = 0.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -19,4 +20,4 @@ func _process(delta):
 	# Update the dotted line
 	line_renderer.points = [pos, pos + Vector2.UP * 1000]
 	
-	pass
+	slider_position = pos.x

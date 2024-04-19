@@ -6,11 +6,8 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_yjor4"]
 radius = 48.28
 
-[node name="Line" type="Node2D" node_paths=PackedStringArray("line_renderer", "start_collision", "end_collision")]
+[node name="Line" type="Node"]
 script = ExtResource("1_uvgog")
-line_renderer = NodePath("Line2D")
-start_collision = NodePath("S")
-end_collision = NodePath("E")
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(270, 281, 725, 246)
