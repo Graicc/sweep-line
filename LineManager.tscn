@@ -22,7 +22,7 @@ script = ExtResource("3_2tuu5")
 [node name="Line2D" type="Line2D" parent="Slider"]
 texture_filter = 1
 texture_repeat = 2
-points = PackedVector2Array(431, 277, 387, 343)
+points = PackedVector2Array(64, -12, 64, 595)
 width = 5.0
 texture = ExtResource("4_fv64i")
 texture_mode = 1

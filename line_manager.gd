@@ -15,7 +15,7 @@ func add_line(start: Vector2, end: Vector2):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	add_line(Vector2(0, 0), Vector2(100, 100))
+	add_line(Vector2(100, 100), Vector2(300, 100))
 	# add_line(Vector2(20, 200), Vector2(200, 100))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
