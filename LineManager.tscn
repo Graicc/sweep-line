@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://btby7vyslwamg"]
+[gd_scene load_steps=6 format=3 uid="uid://btby7vyslwamg"]
 
 [ext_resource type="Script" path="res://line_manager.gd" id="1_n038c"]
 [ext_resource type="PackedScene" uid="uid://cydb6j4yh5jv7" path="res://Line.tscn" id="2_0viv0"]
 [ext_resource type="Script" path="res://slider.gd" id="3_2tuu5"]
 [ext_resource type="Texture2D" uid="uid://c252k160vuq3o" path="res://Dash.png" id="4_fv64i"]
+[ext_resource type="Script" path="res://BenOtt.cs" id="5_5kxk0"]
 
 [node name="Line manager" type="Node"]
 script = ExtResource("1_n038c")
@@ -34,6 +35,9 @@ offset_right = 1072.0
 offset_bottom = 620.0
 max_value = 1.0
 step = 0.0
+
+[node name="BenOtt" type="Node" parent="."]
+script = ExtResource("5_5kxk0")
 
 [connection signal="child_exiting_tree" from="." to="." method="_on_child_exiting_tree"]
 [connection signal="pressed" from="Add line" to="." method="add_random_line"]

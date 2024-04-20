@@ -15,6 +15,9 @@ func set_color(color: Color):
 	start_collision.modulate = color
 	end_collision.modulate = color
 
+func get_color() -> Color:
+	return line_renderer.default_color
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# randomize the hue of the line

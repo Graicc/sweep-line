@@ -8,6 +8,8 @@ var lines: Array[Node] = []
 # $Slider is shorthand for get_node("Slider")
 @onready var slider = $Slider
 
+@onready var ben_ott = $BenOtt
+
 func add_line(start: Vector2, end: Vector2):
 	# Spawn the line in the world
 	var line = line_scene.instantiate()
@@ -25,6 +27,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	print(ben_ott.FindSegmentIntersections(lines))
 	pass
 
 # Wired up to the `Add line` button
