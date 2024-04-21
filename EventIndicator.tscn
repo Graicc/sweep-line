@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://qn1g1b7yxqv"]
+
+[ext_resource type="Texture2D" uid="uid://c252k160vuq3o" path="res://Dash.png" id="1_a47ct"]
+
+[node name="EventIndicator" type="Node2D"]
+
+[node name="Dash" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(3.515, 0)
+scale = Vector2(1.84, 46.365)
+texture = ExtResource("1_a47ct")

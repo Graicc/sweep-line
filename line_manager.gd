@@ -1,6 +1,7 @@
 extends Node
 
 @export var line_scene: PackedScene
+@export var event_indicator_scene: PackedScene
 
 # The array of lines for doing sweep line intersection
 var lines: Array[Node] = []
@@ -28,7 +29,23 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	print(ben_ott.FindSegmentIntersections(lines))
+	update_event_indicators();
 	pass
+	
+var event_indicators: Array[Node2D] = []
+func update_event_indicators():
+	# Get rid of old indicators
+	for e in event_indicators:
+		e.queue_free();
+	
+	event_indicators = []
+	
+	# Add new indicators
+	for e in ben_ott.GetEvents():
+		var event = event_indicator_scene.instantiate()
+		event.position = Vector2(e, slider.get_node("HSlider").global_position.y)
+		event_indicators.append(event)
+		add_child(event)
 
 # Wired up to the `Add line` button
 func add_random_line():

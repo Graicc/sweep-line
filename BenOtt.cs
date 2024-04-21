@@ -41,7 +41,7 @@ public partial class BenOtt : Godot.Node
 		public Segment segment2;
 	}
 
-	bool CheckForIntersection(EQ events, Segment a, Segment b)
+	bool CheckForIntersection(EQ events, float curr, Segment a, Segment b)
 	{
 		if (a == null || b == null)
 		{
@@ -67,6 +67,11 @@ public partial class BenOtt : Godot.Node
 			return false;
 		}
 
+		// Don't add previous events to the queue
+		if (x <= curr)
+		{
+			return true;
+		}
 		// insert the intersection event into the event queue
 		Event intersectionEvent = new Event
 		{
@@ -81,8 +86,7 @@ public partial class BenOtt : Godot.Node
 		return true;
 	}
 
-	public Godot.Collections.Array<Vector2> FindSegmentIntersections(Godot.Collections.Array<Node> nodes)
-	{
+	private static List<Segment> GetSegments(Godot.Collections.Array<Node> nodes) {
 		List<Segment> segments = new();
 
 		foreach (var node in nodes)
@@ -90,7 +94,8 @@ public partial class BenOtt : Godot.Node
 			Vector2 start = (Vector2)node.Get("start");
 			Vector2 end = (Vector2)node.Get("end");
 
-			if (start.X == end.X) {
+			if (start.X == end.X)
+			{
 				GD.Print("Skipping vertical line");
 				continue;
 			}
@@ -108,7 +113,26 @@ public partial class BenOtt : Godot.Node
 			segments.Add(segment);
 		}
 
+		return segments;
+	}
+
+	public EQ allEvents;
+
+	public Godot.Collections.Array<float> GetEvents() {
+		Godot.Collections.Array<float> results = new();
+		while (allEvents.Count > 0) {
+			var e = allEvents.Dequeue();
+			results.Add(e.x);
+		}
+		return results;
+	}
+
+	public Godot.Collections.Array<Vector2> FindSegmentIntersections(Godot.Collections.Array<Node> nodes)
+	{
+        List<Segment> segments = GetSegments(nodes);
+
 		EQ events = new();
+		allEvents = new();
 
 		Godot.Collections.Array<Vector2> results = new();
 
@@ -171,26 +195,32 @@ public partial class BenOtt : Godot.Node
 			return SL[i + 1];
 		}
 
+		// This should never be hit
+		int timeoutCounter = 0;
+
 		// while (EQ is not empty)
 		while (events.Count > 0)
 		{
-			if (events.Count > 10000) {
+			timeoutCounter++;
+			if (timeoutCounter > 10000)
+			{
 				// TODO: This should never be hit
 				GD.Print("Too many events, breaking");
 				return null;
 			}
 			var e = events.Dequeue();
+			allEvents.Enqueue(e, e.x);
 
 			var s = e.segment1;
 			if (e.type == Event.Type.Start)
 			{
-				insert(s.start.X, e.segment1);
-				CheckForIntersection(events, s, next(s));
-				CheckForIntersection(events, s, prev(s));
+				insert(e.x, e.segment1);
+				CheckForIntersection(events, e.x, s, next(s));
+				CheckForIntersection(events, e.x, s, prev(s));
 			}
 			else if (e.type == Event.Type.End)
 			{
-				CheckForIntersection(events, prev(s), next(s));
+				CheckForIntersection(events, e.x, prev(s), next(s));
 				SL.Remove(e.segment1);
 			}
 			else if (e.type == Event.Type.Intersection)
@@ -211,14 +241,14 @@ public partial class BenOtt : Godot.Node
 				if (i > j)
 				{
 					// 2 is after 1
-					CheckForIntersection(events, e.segment1, prev(e.segment1)); // check before 1
-					CheckForIntersection(events, e.segment2, next(e.segment2)); // check after 2
+					CheckForIntersection(events, e.x, e.segment1, prev(e.segment1)); // check before 1
+					CheckForIntersection(events, e.x, e.segment2, next(e.segment2)); // check after 2
 				}
 				else
 				{
 					// 1 is after 2
-					CheckForIntersection(events, e.segment1, next(e.segment1)); // check after 1
-					CheckForIntersection(events, e.segment2, prev(e.segment2)); // check before 2
+					CheckForIntersection(events, e.x, e.segment1, next(e.segment1)); // check after 1
+					CheckForIntersection(events, e.x, e.segment2, prev(e.segment2)); // check before 2
 				}
 			}
 		}
