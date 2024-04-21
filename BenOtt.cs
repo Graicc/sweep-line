@@ -72,6 +72,16 @@ public partial class BenOtt : Godot.Node
 		{
 			return true;
 		}
+
+		// Don't add the same intersection twice
+		foreach (var (e, _) in events.UnorderedItems) {
+			if (e.x == x && e.type == Event.Type.Intersection) {
+				if ((e.segment1 == a && e.segment2 == b) || (e.segment1 == b && e.segment2 == a)) {
+					return true;
+				}
+			}
+		}
+
 		// insert the intersection event into the event queue
 		Event intersectionEvent = new Event
 		{
@@ -116,8 +126,10 @@ public partial class BenOtt : Godot.Node
 		return segments;
 	}
 
-	public EQ allEvents;
+	// Stores all the events that happen
+	public EQ allEvents = new();
 
+	// Returns the positions of all the events that have happened, to be shown on screen
 	public Godot.Collections.Array<float> GetEvents() {
 		Godot.Collections.Array<float> results = new();
 		while (allEvents.Count > 0) {
@@ -127,12 +139,28 @@ public partial class BenOtt : Godot.Node
 		return results;
 	}
 
+	// Stores the history of segments as the line sweeps
+	public List<(float, Godot.Collections.Array<Node>)> segmentsOverTime = new();
+
+	// Returns the segments for a given x position
+	public Godot.Collections.Array<Node> GetSegmentsAtTime(float t) {
+		Godot.Collections.Array<Node> results = new();
+		foreach (var (time, segments) in segmentsOverTime) {
+			if (time > t) {
+				break;
+			}
+			results = segments;
+		}
+		return results;
+	}
+
 	public Godot.Collections.Array<Vector2> FindSegmentIntersections(Godot.Collections.Array<Node> nodes)
 	{
         List<Segment> segments = GetSegments(nodes);
 
 		EQ events = new();
-		allEvents = new();
+		allEvents.Clear();
+		segmentsOverTime.Clear();
 
 		Godot.Collections.Array<Vector2> results = new();
 
@@ -208,6 +236,7 @@ public partial class BenOtt : Godot.Node
 				GD.Print("Too many events, breaking");
 				return null;
 			}
+
 			var e = events.Dequeue();
 			allEvents.Enqueue(e, e.x);
 
@@ -251,6 +280,8 @@ public partial class BenOtt : Godot.Node
 					CheckForIntersection(events, e.x, e.segment2, prev(e.segment2)); // check before 2
 				}
 			}
+		
+			segmentsOverTime.Add((e.x, new Godot.Collections.Array<Node>(SL.ConvertAll(x => x.node))));
 		}
 
 		return results;

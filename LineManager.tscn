@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://btby7vyslwamg"]
+[gd_scene load_steps=8 format=3 uid="uid://btby7vyslwamg"]
 
 [ext_resource type="Script" path="res://line_manager.gd" id="1_n038c"]
 [ext_resource type="PackedScene" uid="uid://cydb6j4yh5jv7" path="res://Line.tscn" id="2_0viv0"]
 [ext_resource type="Script" path="res://slider.gd" id="3_2tuu5"]
 [ext_resource type="PackedScene" uid="uid://qn1g1b7yxqv" path="res://EventIndicator.tscn" id="3_i8py0"]
+[ext_resource type="PackedScene" uid="uid://r50baf7tdvp2" path="res://SegmentIndicator.tscn" id="4_ft8bq"]
 [ext_resource type="Texture2D" uid="uid://c252k160vuq3o" path="res://Dash.png" id="4_fv64i"]
 [ext_resource type="Script" path="res://BenOtt.cs" id="5_5kxk0"]
 
@@ -11,6 +12,7 @@
 script = ExtResource("1_n038c")
 line_scene = ExtResource("2_0viv0")
 event_indicator_scene = ExtResource("3_i8py0")
+segment_indicator_scene = ExtResource("4_ft8bq")
 
 [node name="Add line" type="Button" parent="."]
 offset_left = 1081.0
@@ -23,10 +25,12 @@ text = "+"
 script = ExtResource("3_2tuu5")
 
 [node name="Line2D" type="Line2D" parent="Slider"]
+z_index = 6
 texture_filter = 1
 texture_repeat = 2
 points = PackedVector2Array(64, -12, 64, 595)
 width = 5.0
+default_color = Color(1, 1, 1, 0.337255)
 texture = ExtResource("4_fv64i")
 texture_mode = 1
 

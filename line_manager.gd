@@ -2,6 +2,7 @@ extends Node
 
 @export var line_scene: PackedScene
 @export var event_indicator_scene: PackedScene
+@export var segment_indicator_scene: PackedScene
 
 # The array of lines for doing sweep line intersection
 var lines: Array[Node] = []
@@ -28,10 +29,29 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print(ben_ott.FindSegmentIntersections(lines))
-	update_event_indicators();
-	pass
+	update_intersection_indicators()
+	update_event_indicators()
+	update_segment_indicator()
 	
+var intersection_indicators: Array[Sprite2D] = []
+func update_intersection_indicators():
+	# Get rid of old indicators
+	for i in intersection_indicators:
+		i.queue_free();
+	
+	intersection_indicators = []
+	
+	# Add new indicators
+	for i in ben_ott.FindSegmentIntersections(lines):
+		var intersection = segment_indicator_scene.instantiate()
+		intersection.position = i
+		intersection.z_index = 10
+		intersection.scale *= 0.5
+		intersection.modulate = Color(1, 1, 1)
+		intersection_indicators.append(intersection)
+		add_child(intersection)
+	
+# Vertical ticks on the slider
 var event_indicators: Array[Node2D] = []
 func update_event_indicators():
 	# Get rid of old indicators
@@ -43,9 +63,36 @@ func update_event_indicators():
 	# Add new indicators
 	for e in ben_ott.GetEvents():
 		var event = event_indicator_scene.instantiate()
+		event.z_index = 10
 		event.position = Vector2(e, slider.get_node("HSlider").global_position.y)
 		event_indicators.append(event)
 		add_child(event)
+
+# Circles showing the ordering of segments
+var segment_indicators: Array[Sprite2D] = []
+func update_segment_indicator():
+	# Get rid of old indicators
+	for s in segment_indicators:
+		s.queue_free();
+	
+	segment_indicators = []
+	
+	var offset = Vector2(20, 20)
+	var delta = Vector2(0, 35)
+
+	var i = 0;
+
+	# Add new indicators
+	for s in ben_ott.GetSegmentsAtTime(slider.slider_position):
+		var segment: Sprite2D = segment_indicator_scene.instantiate()
+		segment.position = offset + delta * i
+		segment.modulate = s.get_color()
+		segment.z_index = 10
+		segment_indicators.append(segment)
+		add_child(segment)
+
+		i += 1
+	
 
 # Wired up to the `Add line` button
 func add_random_line():
