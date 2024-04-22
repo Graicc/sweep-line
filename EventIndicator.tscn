@@ -6,6 +6,6 @@
 
 [node name="Dash" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(3.515, 0)
-scale = Vector2(1.84, 46.365)
+position = Vector2(3.515, 8)
+scale = Vector2(0.93, 33.62)
 texture = ExtResource("1_a47ct")

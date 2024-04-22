@@ -96,13 +96,16 @@ func update_segment_indicator():
 
 # Wired up to the `Add line` button
 func add_random_line():
-	var max_y = 600;
-	var max_x = 800;
+	var size = DisplayServer.window_get_size()
+	var margin = 50
+
+	var max_y = size.y - margin;
+	var max_x = size.x - margin;
 	
-	var x1 = randf_range(0, max_x);
-	var y1 = randf_range(0, max_y);
-	var x2 = randf_range(0, max_x);
-	var y2 = randf_range(0, max_y);
+	var x1 = randf_range(margin, max_x);
+	var y1 = randf_range(margin, max_y);
+	var x2 = randf_range(margin, max_x);
+	var y2 = randf_range(margin, max_y);
 	
 	add_line(Vector2(x1, y1), Vector2(x2, y2))
 
